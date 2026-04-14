@@ -145,7 +145,18 @@ document.getElementById("giveUpBtn").addEventListener("click", function(){
     document.getElementById("msg").textContent = 
     "You gave up! The number was " + answer;
 
-    updateScore(range, false);
+    scores.push(range);
+scores.sort(function(a,b){return a-b;});
+
+let leaderboard = document.getElementsByName("leaderboard");
+
+for (let i=0; i < leaderboard.length; i++){
+    if (i < scores.length){
+        leaderboard[i].textContent = scores[i];
+    } else {
+        leaderboard[i].textContent = "--";
+    }
+}
     updateTimers(new Date().getTime());
     reset();
 });
@@ -170,9 +181,17 @@ function time(){
     let day = now.getDate();
     let suffix = "th";
 
-    if(day % 10 === 1 && day !== 11) suffix = "st";
-    else if(day % 10 === 2 && day !== 12) suffix = "nd";
-    else if(day % 10 === 3 && day !== 13) suffix = "rd";
+if (day >= 11 && day <= 13) {
+    suffix = "th";
+} else if (day % 10 === 1) {
+    suffix = "st";
+} else if (day % 10 === 2) {
+    suffix = "nd";
+} else if (day % 10 === 3) {
+    suffix = "rd";
+} else {
+    suffix = "th";
+}
 
     let hours = now.getHours();
     let minutes = now.getMinutes().toString().padStart(2, "0");
